@@ -7,7 +7,7 @@ const image = document.querySelector(".cover");
 const title = document.querySelector(".title");
 const progressContainer = document.querySelector(".progress-container");
 const progress = document.querySelector(".progress");
-const volume = document.getElementById('volume')
+const volume = document.getElementById("volume");
 
 const songs = [
   "INNA - Amazing",
@@ -18,6 +18,15 @@ const songs = [
 ];
 let songIndex = 0;
 
+// volume
+let volumePB = 10;
+function volFunc() {
+  if (volumePB != 0) {
+    volumePB--;
+    audio.volume = volumePB / 10;
+  }
+}
+
 btnPlay.addEventListener("click", () => {
   if (container.classList.contains("play")) {
     playFunc("play");
@@ -26,9 +35,9 @@ btnPlay.addEventListener("click", () => {
   }
 });
 
-volume.addEventListener('input', () => {
-    audio.volume = volume.value / 10
-})
+volume.addEventListener("input", () => {
+  audio.volume = volume.value / 10;
+});
 
 btnNext.addEventListener("click", nextFunc);
 btnPrev.addEventListener("click", prevFunc);
@@ -47,7 +56,21 @@ progressContainer.addEventListener("click", function (e) {
 function playFunc(onOff) {
   container.classList.toggle("play");
   btnPlay.innerHTML = `<i class="fas fa-${onOff}"></i>`;
-  onOff == "play" ? audio.pause() : audio.play();
+  onOff == "play" ? playEvent() : audio.play();
+  // if (onOff == "play") {
+
+  // } else {
+  //   audio.play();
+  // }
+}
+function playEvent() {
+  let vol = setInterval(volFunc, 100);
+  setTimeout(() => {
+    clearInterval(vol);
+    audio.pause();
+    audio.volume = 1;
+  }, 1000);
+
 }
 
 function timeUpdate(e) {
